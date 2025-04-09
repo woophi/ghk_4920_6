@@ -93,11 +93,17 @@ const hr = style({
 });
 
 const wrap = style({
-  maskImage: 'linear-gradient(to bottom,transparent,black 230px,black calc(100% - 230px),transparent)',
-  WebkitMaskImage: 'linear-gradient(to bottom,transparent,black 230px,black calc(100% - 230px),transparent)',
+  maskImage: 'linear-gradient(to bottom,transparent,black 115px,black calc(100% - 115px),transparent)',
+  WebkitMaskImage: 'linear-gradient(to bottom,transparent,black 115px,black calc(100% - 115px),transparent)',
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
+  marginTop: '1rem',
+});
+
+const swSlide = style({
+  width: '276px',
+  height: '324px',
 });
 
 export const appSt = {
@@ -111,4 +117,5 @@ export const appSt = {
   numberContaier,
   hr,
   wrap,
+  swSlide,
 };

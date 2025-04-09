@@ -15,7 +15,8 @@
     "@vanilla-extract/recipes": "0.5.5",
     "@vanilla-extract/vite-plugin": "5.0.1",
     "react": "19.0.0",
-    "react-dom": "19.0.0"
+    "react-dom": "19.0.0",
+    "swiper": "11.1.14"
   },
   "devDependencies": {
     "@types/react": "19.0.9",
@@ -31,7 +32,10 @@
   },
   "pnpm": {
     "onlyBuiltDependencies": [
-      "esbuild"
+      "@swc/core",
+      "core-js",
+      "esbuild",
+      "swiper"
     ]
   }
 }

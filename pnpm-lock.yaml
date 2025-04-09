@@ -26,6 +26,9 @@ importers:
       react-dom:
         specifier: 19.0.0
         version: 19.0.0(react@19.0.0)
+      swiper:
+        specifier: 11.1.14
+        version: 11.1.14
     devDependencies:
       '@types/react':
         specifier: 19.0.9
@@ -1764,6 +1767,10 @@ packages:
   supports-color@7.2.0:
     resolution: {integrity: sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==}
     engines: {node: '>=8'}
+
+  swiper@11.1.14:
+    resolution: {integrity: sha512-VbQLQXC04io6AoAjIUWuZwW4MSYozkcP9KjLdrsG/00Q/yiwvhz9RQyt0nHXV10hi9NVnDNy1/wv7Dzq1lkOCQ==}
+    engines: {node: '>= 4.7.0'}
 
   swiper@6.8.4:
     resolution: {integrity: sha512-O+buF9Q+sMA0H7luMS8R59hCaJKlpo8PXhQ6ZYu6Rn2v9OsFd4d1jmrv14QvxtQpKAvL/ZiovEeANI/uDGet7g==}
@@ -3671,6 +3678,8 @@ snapshots:
   supports-color@7.2.0:
     dependencies:
       has-flag: 4.0.0
+
+  swiper@11.1.14: {}
 
   swiper@6.8.4:
     dependencies:

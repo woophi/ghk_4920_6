@@ -1,8 +1,10 @@
 import { ButtonMobile } from '@alfalab/core-components/button/mobile';
 import { CDNIcon } from '@alfalab/core-components/cdn-icon';
+import { Checkbox } from '@alfalab/core-components/checkbox';
 import { Gap } from '@alfalab/core-components/gap';
 import { Typography } from '@alfalab/core-components/typography';
 import { useState } from 'react';
+import { Swiper, SwiperSlide } from 'swiper/react';
 import bg from './assets/bg.png';
 import { LS, LSKeys } from './ls';
 import { appSt } from './style.css';
@@ -20,21 +22,44 @@ const generateRandomNumbers = (count: number, min: number, max: number): number[
   return randomNumbers;
 };
 
-const get5Rows = () => [
-  generateRandomNumbers(5, 1, 99),
-  generateRandomNumbers(5, 1, 99),
-  generateRandomNumbers(5, 1, 99),
-  generateRandomNumbers(5, 1, 99),
-  generateRandomNumbers(5, 1, 99),
+const get3Rows = () => [generateRandomNumbers(4, 1, 99), generateRandomNumbers(4, 1, 99), generateRandomNumbers(4, 1, 99)];
+
+const get5Tickets = () => [
+  {
+    selected: true,
+    randomNumbers: get3Rows(),
+  },
+  {
+    selected: true,
+    randomNumbers: get3Rows(),
+  },
+  {
+    selected: false,
+    randomNumbers: get3Rows(),
+  },
+  {
+    selected: false,
+    randomNumbers: get3Rows(),
+  },
+  {
+    selected: false,
+    randomNumbers: get3Rows(),
+  },
 ];
 
 export const App = () => {
   const [loading, setLoading] = useState(false);
   const [thxShow, setThx] = useState(LS.getItem(LSKeys.ShowThx, false));
   const [step, setStep] = useState<'init' | 'numbers'>('init');
-  const [randomNumbers, setRandomNumbers] = useState(get5Rows());
+  const [tickets, setTickets] = useState(get5Tickets());
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  const selectedTickets = tickets.filter(ticket => ticket.selected);
 
   const submit = () => {
+    if (!selectedTickets.length) {
+      return;
+    }
     window.gtag('event', '4920_engage_var6');
     setLoading(true);
     LS.setItem(LSKeys.ShowThx, true);
@@ -59,58 +84,86 @@ export const App = () => {
             </Typography.Text>
           </div>
 
-          <div className={appSt.wrap}>
-            <div className={appSt.numbersContainer}>
-              {randomNumbers[0].map((number, index) => (
-                <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                  <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                    {number}
-                  </Typography.TitleResponsive>
-                </div>
-              ))}
-            </div>
+          <div>
+            <Swiper
+              style={{ marginLeft: '0', marginTop: '2rem' }}
+              spaceBetween={32}
+              slidesPerView="auto"
+              onSlideChange={s => setActiveSlide(s.activeIndex)}
+            >
+              {tickets.map((ticket, index) => (
+                <SwiperSlide
+                  key={index}
+                  className={appSt.swSlide}
+                  onClick={e => {
+                    e.preventDefault();
+                    setTickets(prev => prev.map((t, i) => (i === index ? { ...t, selected: !t.selected } : t)));
+                  }}
+                >
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                    <Checkbox checked={ticket.selected} size={24} />
+                    {ticket.selected ? (
+                      <div
+                        style={{
+                          marginLeft: '.25rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                        }}
+                      >
+                        Выбрано <span>200 миль</span>
+                      </div>
+                    ) : (
+                      <div
+                        style={{
+                          marginLeft: '.25rem',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'space-between',
+                          width: '100%',
+                        }}
+                      >
+                        Выбрать <span>200 миль</span>
+                      </div>
+                    )}
+                  </div>
+                  <div className={appSt.wrap}>
+                    <div className={appSt.numbersContainer}>
+                      {ticket.randomNumbers[0].map((number, index) => (
+                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
+                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                            {number}
+                          </Typography.TitleResponsive>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={appSt.hr} />
 
-            <div className={appSt.numbersContainer}>
-              {randomNumbers[1].map((number, index) => (
-                <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                  <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                    {number}
-                  </Typography.TitleResponsive>
-                </div>
-              ))}
-            </div>
-            <div className={appSt.hr} />
+                    <div className={appSt.numbersContainer}>
+                      {ticket.randomNumbers[1].map((number, index) => (
+                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: true })}>
+                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                            {number}
+                          </Typography.TitleResponsive>
+                        </div>
+                      ))}
+                    </div>
+                    <div className={appSt.hr} />
 
-            <div className={appSt.numbersContainer}>
-              {randomNumbers[2].map((number, index) => (
-                <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: true })}>
-                  <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                    {number}
-                  </Typography.TitleResponsive>
-                </div>
+                    <div className={appSt.numbersContainer}>
+                      {ticket.randomNumbers[2].map((number, index) => (
+                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
+                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                            {number}
+                          </Typography.TitleResponsive>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </SwiperSlide>
               ))}
-            </div>
-            <div className={appSt.hr} />
-
-            <div className={appSt.numbersContainer}>
-              {randomNumbers[3].map((number, index) => (
-                <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                  <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                    {number}
-                  </Typography.TitleResponsive>
-                </div>
-              ))}
-            </div>
-
-            <div className={appSt.numbersContainer}>
-              {randomNumbers[4].map((number, index) => (
-                <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                  <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                    {number}
-                  </Typography.TitleResponsive>
-                </div>
-              ))}
-            </div>
+            </Swiper>
           </div>
         </div>
         <div style={{ height: '160px' }} />
@@ -123,7 +176,14 @@ export const App = () => {
             view="secondary"
             onClick={() => {
               window.gtag('event', '4920_combination_var6');
-              setRandomNumbers(get5Rows());
+              setTickets(prev =>
+                prev.map((ticket, index) => {
+                  if (index === activeSlide) {
+                    return { ...ticket, randomNumbers: get3Rows() };
+                  }
+                  return ticket;
+                }),
+              );
             }}
           >
             Новая комбинация
@@ -133,7 +193,11 @@ export const App = () => {
             loading={loading}
             block
             view="primary"
-            hint="Стоимость участия 200 ₽"
+            hint={
+              selectedTickets.length
+                ? `${selectedTickets.length}шт ${selectedTickets.length * 200} миль`
+                : 'Выберите счастливую комбинацию чисел'
+            }
             onClick={submit}
           >
             Участвовать
@@ -151,28 +215,26 @@ export const App = () => {
             Альфа Джекпот
           </Typography.TitleResponsive>
           <Typography.Text view="primary-medium" color="secondary">
-            Выиграйте погашение кредита
+            Участвуйте и выигрывайте!
           </Typography.Text>
 
           <img src={bg} height={170} width="100%" className={appSt.img} />
         </div>
 
+        <Typography.Text view="primary-medium">Миллионы рублей - мечта или реальность?</Typography.Text>
         <Typography.Text view="primary-medium">
-          Участвуйте в Альфа Джекпот! У вас есть шанс полностью закрыть кредит или сократить ежемесячные платежи.
+          Испытайте свою удачу, выбирайте счастливую комбинацию чисел и исполняйте самые заветные желания.
         </Typography.Text>
-        <Typography.Text view="primary-medium">Маленький вклад сегодня — большая победа завтра. </Typography.Text>
 
         <div className={appSt.row}>
-          <CDNIcon name="rocky_cup_m" />
+          <CDNIcon name="glyph_ticket-star_m" />
 
-          <Typography.Text view="primary-medium">Погасите кредит по цене чашки кофе!</Typography.Text>
+          <Typography.Text view="primary-medium">Оплачивайте участие кэшбеком, а не рублями</Typography.Text>
         </div>
         <div className={appSt.row}>
           <CDNIcon name="glyph_ticket-star_m" />
 
-          <Typography.Text view="primary-medium">
-            Участвуйте и получите погашение ежемесячного платежа или всего кредита
-          </Typography.Text>
+          <Typography.Text view="primary-medium">Ваш кэшбэк — ваш ключ к миллионам</Typography.Text>
         </div>
       </div>
       <Gap size={96} />
