@@ -9,6 +9,7 @@ import bg from './assets/bg.png';
 import { LS, LSKeys } from './ls';
 import { appSt } from './style.css';
 import { ThxLayout } from './thx/ThxLayout';
+import { sendDataToGA } from './utils/events';
 
 const generateRandomNumbers = (count: number, min: number, max: number): number[] => {
   const randomNumbers: number[] = [];
@@ -62,9 +63,13 @@ export const App = () => {
     }
     window.gtag('event', '4920_engage_var6');
     setLoading(true);
-    LS.setItem(LSKeys.ShowThx, true);
-    setThx(true);
-    setLoading(false);
+    sendDataToGA({
+      engage_price: selectedTickets.length * 200,
+    }).then(() => {
+      LS.setItem(LSKeys.ShowThx, true);
+      setThx(true);
+      setLoading(false);
+    });
   };
 
   if (thxShow) {
