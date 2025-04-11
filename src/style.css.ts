@@ -98,12 +98,17 @@ const wrap = style({
   display: 'flex',
   flexDirection: 'column',
   gap: '1rem',
+});
+
+const wrap2 = style({
+  border: '4px solid #FFDCD3',
+  borderRadius: '8px',
   marginTop: '1rem',
+  padding: '0 .25rem',
 });
 
 const swSlide = style({
   width: '276px',
-  height: '324px',
 });
 
 export const appSt = {
@@ -118,4 +123,5 @@ export const appSt = {
   hr,
   wrap,
   swSlide,
+  wrap2,
 };

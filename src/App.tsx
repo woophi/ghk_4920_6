@@ -1,11 +1,12 @@
 import { ButtonMobile } from '@alfalab/core-components/button/mobile';
 import { CDNIcon } from '@alfalab/core-components/cdn-icon';
-import { Checkbox } from '@alfalab/core-components/checkbox';
 import { Gap } from '@alfalab/core-components/gap';
 import { Typography } from '@alfalab/core-components/typography';
 import { useState } from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import bg from './assets/bg.png';
+import checked from './assets/checked.png';
+import unchecked from './assets/unchecked.png';
 import { LS, LSKeys } from './ls';
 import { appSt } from './style.css';
 import { ThxLayout } from './thx/ThxLayout';
@@ -106,7 +107,8 @@ export const App = () => {
                   }}
                 >
                   <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                    <Checkbox checked={ticket.selected} size={24} />
+                    <img width={38} height={38} src={ticket.selected ? checked : unchecked} />
+
                     {ticket.selected ? (
                       <div
                         style={{
@@ -117,7 +119,7 @@ export const App = () => {
                           width: '100%',
                         }}
                       >
-                        Выбрано <span>200 миль</span>
+                        Выбран <span>200 миль</span>
                       </div>
                     ) : (
                       <div
@@ -133,43 +135,48 @@ export const App = () => {
                       </div>
                     )}
                   </div>
-                  <div className={appSt.wrap}>
-                    <div className={appSt.numbersContainer}>
-                      {ticket.randomNumbers[0].map((number, index) => (
-                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                            {number}
-                          </Typography.TitleResponsive>
-                        </div>
-                      ))}
-                    </div>
-                    <div className={appSt.hr} />
+                  <div className={appSt.wrap2}>
+                    <div className={appSt.wrap}>
+                      <div className={appSt.numbersContainer}>
+                        {ticket.randomNumbers[0].map((number, index) => (
+                          <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
+                            <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                              {number}
+                            </Typography.TitleResponsive>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={appSt.hr} />
 
-                    <div className={appSt.numbersContainer}>
-                      {ticket.randomNumbers[1].map((number, index) => (
-                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: true })}>
-                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                            {number}
-                          </Typography.TitleResponsive>
-                        </div>
-                      ))}
-                    </div>
-                    <div className={appSt.hr} />
+                      <div className={appSt.numbersContainer}>
+                        {ticket.randomNumbers[1].map((number, index) => (
+                          <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: true })}>
+                            <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                              {number}
+                            </Typography.TitleResponsive>
+                          </div>
+                        ))}
+                      </div>
+                      <div className={appSt.hr} />
 
-                    <div className={appSt.numbersContainer}>
-                      {ticket.randomNumbers[2].map((number, index) => (
-                        <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
-                          <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
-                            {number}
-                          </Typography.TitleResponsive>
-                        </div>
-                      ))}
+                      <div className={appSt.numbersContainer}>
+                        {ticket.randomNumbers[2].map((number, index) => (
+                          <div key={`${number}-${index}`} className={appSt.numberContaier({ selected: false })}>
+                            <Typography.TitleResponsive tag="h3" view="medium" font="system" weight="bold">
+                              {number}
+                            </Typography.TitleResponsive>
+                          </div>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 </SwiperSlide>
               ))}
             </Swiper>
           </div>
+          <Typography.Text view="primary-small" style={{ textAlign: 'center', marginTop: '1rem' }}>
+            Крутите вправо и выбирайте больше билетов!
+          </Typography.Text>
         </div>
         <div style={{ height: '160px' }} />
 
@@ -234,7 +241,7 @@ export const App = () => {
         <div className={appSt.row}>
           <CDNIcon name="glyph_ticket-star_m" />
 
-          <Typography.Text view="primary-medium">Оплачивайте участие кэшбеком, а не рублями</Typography.Text>
+          <Typography.Text view="primary-medium">Оплачивайте участие милями, а не рублями</Typography.Text>
         </div>
         <div className={appSt.row}>
           <CDNIcon name="glyph_ticket-star_m" />
